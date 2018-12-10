@@ -154,6 +154,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         public RecordingsViewHolder(View v) {
             super(v);
             vName = (TextView) v.findViewById(R.id.file_name_text);
+            vName.setSelected(true);
             vLength = (TextView) v.findViewById(R.id.file_length_text);
             vDateAdded = (TextView) v.findViewById(R.id.file_date_added_text);
             cardView = v.findViewById(R.id.card_view);
