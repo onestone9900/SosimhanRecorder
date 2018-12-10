@@ -25,6 +25,7 @@ import java.io.File;
  * Use the {@link RecordFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class RecordFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_POSITION = "position";

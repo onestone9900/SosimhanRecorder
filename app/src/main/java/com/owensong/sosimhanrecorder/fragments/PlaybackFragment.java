@@ -85,6 +85,7 @@ public class PlaybackFragment extends DialogFragment{
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_media_playback, null);
 
         mFileNameTextView = (TextView) view.findViewById(R.id.file_name_text_view);
+        mFileNameTextView.setSelected(true);
         mFileLengthTextView = (TextView) view.findViewById(R.id.file_length_text_view);
         mCurrentProgressTextView = (TextView) view.findViewById(R.id.current_progress_text_view);
 
