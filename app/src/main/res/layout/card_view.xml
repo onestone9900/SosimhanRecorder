@@ -41,7 +41,11 @@
                     android:text="file_name"
                     android:textSize="15sp"
                     android:fontFamily="sans-serif-condensed"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    />
 
                 <TextView
                     android:id="@+id/file_length_text"
