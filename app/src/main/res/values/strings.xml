@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- About -->
-    <string name="link">Website: github.com/dkim0419/SoundRecorder</string>
+    <string name="link">Website: https://github.com/sowen2819/SosimhanRecorder</string>
 
     <!-- Toolbar -->
-    <string name="app_name">Sound Recorder</string>
+    <string name="app_name">Sosimhan Recorder</string>
     <string name="action_licenses">Licenses</string>
     <string name="action_settings">Settings</string>
     <string name="tab_title_record">Record</string>

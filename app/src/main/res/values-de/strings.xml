@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Toolbar -->
-    <string name="app_name">Sound Recorder</string>
+    <string name="app_name">Sosimhan Recorder</string>
     <string name="action_licenses">Lizenzen</string>
     <string name="action_settings">Einstellungen</string>
     <string name="tab_title_record">Aufnehmen</string>
