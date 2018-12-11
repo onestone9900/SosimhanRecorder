@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 26
     buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.owensong.sosimhanrecorder"
         minSdkVersion 16
-        targetSdkVersion 21
+        targetSdkVersion 26
         versionCode 130
         versionName "1.0.0"
     }
@@ -23,9 +23,9 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:21.0.+'
-    api 'com.android.support:cardview-v7:21.0.+'
-    api 'com.android.support:recyclerview-v7:21.0.+'
+    api 'com.android.support:appcompat-v7:26.0.+'
+    api 'com.android.support:cardview-v7:26.0.+'
+    api 'com.android.support:recyclerview-v7:26.0.+'
     api 'com.melnykov:floatingactionbutton:1.1.0'
     api 'com.jpardogo.materialtabstrip:library:1.0.6'
 }
