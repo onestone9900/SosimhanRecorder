@@ -17,6 +17,9 @@ import com.owensong.sosimhanrecorder.adapters.FileViewerAdapter;
 /**
  * Created by Daniel on 12/23/2014.
  */
+/**
+ * Modifed by OwenSong on 12/11/2018
+ */
 public class FileViewerFragment extends Fragment{
     private static final String ARG_POSITION = "position";
     private static final String LOG_TAG = "FileViewerFragment";

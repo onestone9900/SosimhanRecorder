@@ -32,6 +32,9 @@ import java.util.ArrayList;
 /**
  * Created by Daniel on 12/29/2014.
  */
+/**
+ * Modifed by OwenSong on 12/11/2018
+ */
 public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.RecordingsViewHolder>
     implements OnDatabaseChangedListener{
 
@@ -77,7 +80,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
             public void onClick(View view) {
                 try {
                     PlaybackFragment playbackFragment =
-                            new PlaybackFragment().newInstance(getItem(holder.getPosition()));
+                            new PlaybackFragment().newInstance(getItem(holder.getLayoutPosition()));
 
                     FragmentTransaction transaction = ((FragmentActivity) mContext)
                             .getSupportFragmentManager()
@@ -109,11 +112,11 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         if (item == 0) {
-                            shareFileDialog(holder.getPosition());
+                            shareFileDialog(holder.getLayoutPosition());
                         } if (item == 1) {
-                            renameFileDialog(holder.getPosition());
+                            renameFileDialog(holder.getLayoutPosition());
                         } else if (item == 2) {
-                            deleteFileDialog(holder.getPosition());
+                            deleteFileDialog(holder.getLayoutPosition());
                         }
                     }
                 });

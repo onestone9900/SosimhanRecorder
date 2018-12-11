@@ -11,8 +11,11 @@ import com.owensong.sosimhanrecorder.fragments.SettingsFragment;
 /**
  * Created by Daniel on 5/22/2017.
  */
+/**
+ * Modifed by OwenSong on 12/11/2018
+ */
 
-public class SettingsActivity extends android.support.v7.app.ActionBarActivity {
+public class SettingsActivity extends android.support.v7.app.AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
