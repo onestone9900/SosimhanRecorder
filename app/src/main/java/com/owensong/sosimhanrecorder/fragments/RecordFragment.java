@@ -31,21 +31,18 @@ import java.io.File;
  */
 
 public class RecordFragment extends Fragment {
+
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_POSITION = "position";
     private static final String LOG_TAG = RecordFragment.class.getSimpleName();
-
     private int position;
-
     //Recording controls
     private FloatingActionButton mRecordButton = null;
-
     private TextView mRecordingPrompt;
     private int mRecordPromptCount = 0;
-
     private boolean mStartRecording = true;
     long timeWhenPaused = 0; //stores time when user clicks pause button
-
     private TextView mCountTextView;
     private Button mCountButton;
     int count = 0;
@@ -61,11 +58,7 @@ public class RecordFragment extends Fragment {
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);
-
         return f;
-    }
-
-    public RecordFragment() {
     }
 
     @Override
@@ -80,10 +73,10 @@ public class RecordFragment extends Fragment {
         View recordView = inflater.inflate(R.layout.fragment_record, container, false);
 
         //update recording prompt text
-        mRecordingPrompt = (TextView) recordView.findViewById(R.id.recording_status_text);
+        mRecordingPrompt = recordView.findViewById(R.id.recording_status_text);
 
-        mCountButton=(Button)recordView.findViewById(R.id.btnCount);
-        mCountTextView=(TextView)recordView.findViewById(R.id.tvCount);
+        mCountButton=recordView.findViewById(R.id.btnCount);
+        mCountTextView=recordView.findViewById(R.id.tvCount);
         mCountButton.setEnabled(false);
         mCountButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,8 +84,7 @@ public class RecordFragment extends Fragment {
                 mCountTextView.setText(Integer.toString(++count));
             }
         });
-
-        mRecordButton = (FloatingActionButton) recordView.findViewById(R.id.btnRecord);
+        mRecordButton =recordView.findViewById(R.id.btnRecord);
         mRecordButton.setColorNormal(getResources().getColor(R.color.primary));
         mRecordButton.setColorPressed(getResources().getColor(R.color.primary_dark));
         mRecordButton.setOnClickListener(new View.OnClickListener() {
@@ -102,14 +94,12 @@ public class RecordFragment extends Fragment {
                 mStartRecording = !mStartRecording;
             }
         });
-
         return recordView;
     }
 
     // Recording Start/Stop
     //TODO: recording pause
     private void onRecord(boolean start){
-
         Intent intent = new Intent(getActivity(), RecordingService.class);
 
         if (start) {
@@ -145,14 +135,4 @@ public class RecordFragment extends Fragment {
         }
     }
 
-    //TODO: implement pause recording
-    private void onPauseRecord(boolean pause) {
-        if (pause) {
-            //pause recording
-            mRecordingPrompt.setText((String)getString(R.string.resume_recording_button).toUpperCase());
-        } else {
-            //resume recording
-            mRecordingPrompt.setText((String)getString(R.string.pause_recording_button).toUpperCase());
-        }
-    }
 }

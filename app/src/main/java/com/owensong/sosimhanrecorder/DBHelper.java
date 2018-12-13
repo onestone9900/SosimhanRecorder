@@ -9,8 +9,6 @@ import android.provider.BaseColumns;
 
 import com.owensong.sosimhanrecorder.listeners.OnDatabaseChangedListener;
 
-import java.util.Comparator;
-
 /**
  * Created by Daniel on 12/29/2014.
  */
@@ -103,18 +101,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public Context getContext() {
-        return mContext;
-    }
-
-    public class RecordingComparator implements Comparator<RecordingItem> {
-        public int compare(RecordingItem item1, RecordingItem item2) {
-            Long o1 = item1.getTime();
-            Long o2 = item2.getTime();
-            return o2.compareTo(o1);
-        }
-    }
-
     public long addRecording(String recordingName, String filePath, long length) {
 
         SQLiteDatabase db = getWritableDatabase();
@@ -143,20 +129,5 @@ public class DBHelper extends SQLiteOpenHelper {
         if (mOnDatabaseChangedListener != null) {
             mOnDatabaseChangedListener.onDatabaseEntryRenamed();
         }
-    }
-
-    public long restoreRecording(RecordingItem item) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(DBHelperItem.COLUMN_NAME_RECORDING_NAME, item.getName());
-        cv.put(DBHelperItem.COLUMN_NAME_RECORDING_FILE_PATH, item.getFilePath());
-        cv.put(DBHelperItem.COLUMN_NAME_RECORDING_LENGTH, item.getLength());
-        cv.put(DBHelperItem.COLUMN_NAME_TIME_ADDED, item.getTime());
-        cv.put(DBHelperItem._ID, item.getId());
-        long rowId = db.insert(DBHelperItem.TABLE_NAME, null, cv);
-        if (mOnDatabaseChangedListener != null) {
-            //mOnDatabaseChangedListener.onNewDatabaseEntryAdded();
-        }
-        return rowId;
     }
 }
