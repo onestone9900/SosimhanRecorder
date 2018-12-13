@@ -1,13 +1,18 @@
 package com.owensong.sosimhanrecorder.adapters;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -234,11 +239,16 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
     }
 
     public void shareFileDialog(int position) {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(getItem(position).getFilePath())));
-        shareIntent.setType("audio/mp4");
-        mContext.startActivity(Intent.createChooser(shareIntent, mContext.getText(R.string.send_to)));
+
+        try {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(mContext,"com.owensong.sosimhanrecorder.fileprovider", new File(getItem(position).getFilePath())));
+            shareIntent.setType("audio/mp4");
+            mContext.startActivity(Intent.createChooser(shareIntent, mContext.getText(R.string.send_to)));
+        }catch (Exception e){
+            e.getStackTrace();
+        }
     }
 
     public void renameFileDialog (final int position) {

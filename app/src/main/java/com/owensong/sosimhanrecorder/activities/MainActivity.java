@@ -34,29 +34,44 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        int storagePermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int recordPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
-
-        if(storagePermissionCheck==PackageManager.PERMISSION_DENIED && recordPermissionCheck==PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},1);
-        }else if(storagePermissionCheck==PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},2);
-        }else if(recordPermissionCheck==PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},3);
-        }
-
         setContentView(R.layout.activity_main);
 
-        pager = (ViewPager) findViewById(R.id.pager);
+        requestPermission();
+
+        pager = findViewById(R.id.pager);
         pager.setAdapter(new MyAdapter(getSupportFragmentManager()));
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs =  findViewById(R.id.tabs);
         tabs.setViewPager(pager);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setPopupTheme(R.style.ThemeOverlay_AppCompat_Light);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+        }
+    }
+
+    private void requestPermission(){
+        int storageWritePermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int storageReadPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int recordPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+
+        if(storageWritePermissionCheck==PackageManager.PERMISSION_DENIED
+                && storageReadPermissionCheck==PackageManager.PERMISSION_DENIED
+                && recordPermissionCheck==PackageManager.PERMISSION_DENIED){
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.RECORD_AUDIO
+                    },1);
+
+        }else if(storageWritePermissionCheck==PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},2);
+        }else if(storageReadPermissionCheck==PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},3);
+        }else if(recordPermissionCheck==PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},4);
         }
     }
 
