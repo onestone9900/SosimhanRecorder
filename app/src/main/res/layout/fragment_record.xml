@@ -41,6 +41,23 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
+
+    <com.melnykov.fab.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnPause"
+        app:fab_colorNormal="@color/primary"
+        android:textAllCaps="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/ic_media_pause"/>
+
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

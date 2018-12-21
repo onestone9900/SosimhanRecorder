@@ -40,6 +40,7 @@
                 android:resource="@xml/filepaths" />
         </provider>
         <service android:name="com.owensong.sosimhanrecorder.RecordingService" />
+        <service android:name="com.owensong.sosimhanrecorder.RecordingPauseService" />
     </application>
 
 </manifest>

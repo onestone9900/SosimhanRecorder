@@ -7,6 +7,11 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.owensong.sosimhanrecorder.DBHelper;
+import com.owensong.sosimhanrecorder.MySharedPreferences;
+import com.owensong.sosimhanrecorder.R;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.TimerTask;
@@ -14,7 +19,7 @@ import java.util.TimerTask;
 /**
  * Created by Daniel on 12/28/2014.
  */
-public class RecordingService extends Service {
+public class RecordingPauseService extends Service {
 
     private static final String LOG_TAG = "RecordingService";
 

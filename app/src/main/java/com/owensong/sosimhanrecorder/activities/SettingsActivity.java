@@ -21,7 +21,7 @@ public class SettingsActivity extends android.support.v7.app.AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setPopupTheme(R.style.ThemeOverlay_AppCompat_Light);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
