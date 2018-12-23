@@ -3,21 +3,18 @@ package com.owensong.sosimhanrecorder;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaRecorder;
+import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.owensong.sosimhanrecorder.DBHelper;
-import com.owensong.sosimhanrecorder.MySharedPreferences;
-import com.owensong.sosimhanrecorder.R;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.TimerTask;
 
 /**
- * Created by Daniel on 12/28/2014.
+ * Created by OwenSong on 12/22/2018.
  */
 public class RecordingPauseService extends Service {
 
@@ -28,26 +25,36 @@ public class RecordingPauseService extends Service {
 
     private MediaRecorder mRecorder = null;
 
-    private DBHelper mDatabase;
-
     private long mStartingTimeMillis = 0;
     private long mElapsedMillis = 0;
 
     private TimerTask mIncrementTimerTask = null;
+    private int pauseCount=0;
+
+    private int finalCheck=0;
+
+    IBinder mBinder = new MyBinder();
+    public class MyBinder extends Binder {
+        public RecordingPauseService getService() { // 서비스 객체를 리턴
+            return RecordingPauseService .this;
+        }
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        pauseCount=intent.getExtras().getInt("pauseCount");
+        startRecording();
+        return mBinder;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mDatabase = new DBHelper(getApplicationContext());
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        pauseCount=intent.getExtras().getInt("pauseCount");
         startRecording();
         return START_STICKY;
     }
@@ -59,6 +66,10 @@ public class RecordingPauseService extends Service {
         }
 
         super.onDestroy();
+    }
+
+    public void setFinalCheck() { // 임의 랜덤값을 리턴하는 메서드
+        this.finalCheck=1;
     }
 
     public void startRecording() {
@@ -89,19 +100,11 @@ public class RecordingPauseService extends Service {
     }
 
     public void setFileNameAndPath(){
-        int count = 0;
         File f;
-
-        do{
-            count++;
-
-            mFileName = getString(R.string.default_file_name)
-                    + "_" + (mDatabase.getCount() + count) + ".mp4";
-            mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            mFilePath += "/SoundRecorder/" + mFileName;
-
-            f = new File(mFilePath);
-        }while (f.exists() && !f.isDirectory());
+        mFileName = getString(R.string.default_file_name)+pauseCount+".mp4";
+        mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        mFilePath += "/TempSoundRecorder/" + mFileName;
+        f = new File(mFilePath);
     }
 
     public void stopRecording() {
@@ -109,7 +112,7 @@ public class RecordingPauseService extends Service {
         mElapsedMillis = (System.currentTimeMillis() - mStartingTimeMillis);
         mRecorder.reset();
         mRecorder.release();
-        Toast.makeText(this, getString(R.string.toast_recording_finish) + " " + mFilePath, Toast.LENGTH_LONG).show();
+       Toast.makeText(this, getString(R.string.toast_recording_finish) + " " + mFilePath, Toast.LENGTH_LONG).show();
 
         //remove notification
         if (mIncrementTimerTask != null) {
@@ -118,12 +121,8 @@ public class RecordingPauseService extends Service {
         }
 
         mRecorder = null;
-
-        try {
-            mDatabase.addRecording(mFileName, mFilePath, mElapsedMillis);
-
-        } catch (Exception e){
-            Log.e(LOG_TAG, "exception", e);
+        if(finalCheck==1) {
+            new FileCombination(getApplicationContext(), pauseCount);
         }
     }
 
