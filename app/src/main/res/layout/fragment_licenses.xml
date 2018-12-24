@@ -44,6 +44,25 @@
                 android:text="@string/license_content_fab"/>
 
 
+            <!-- Mp4Parser(ISO VIEWER) -->
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/license_title_mp4parser"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="@string/license_author_mp4"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="@string/license_total"/>
             <!-- AndroidAssetStudio -->
             <TextView
                 android:id="@+id/textView2"
@@ -53,6 +72,13 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:text="@string/license_title_aas" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="@string/license_author_tabs"/>
+
+
 
             <!-- PagerSlidingTabStrip -->
             <TextView

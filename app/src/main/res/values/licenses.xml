@@ -24,7 +24,15 @@
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         SOFTWARE.
     </string>
+
+    <string name= "license_total">under Apache License Version 2.0</string>
+
+    <string name="license_title_mp4parser">MP4Parser</string>
+    <string name="license_author_mp4">sannies</string>
+
     <string name="license_title_aas">AndroidAssetStudio</string>
+    <string name="license_author_Asset">romannurik</string>
+
     <string name="license_title_tabs">PagerSlidingTabStrip</string>
     <string name="license_author_tabs">Andreas Stuetz</string>
     <string name="license_content_tabs">
