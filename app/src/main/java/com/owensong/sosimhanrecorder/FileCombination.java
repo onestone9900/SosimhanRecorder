@@ -28,7 +28,7 @@ import java.util.TimerTask;
 import static android.content.ContentValues.TAG;
 
 /**
- * Created by Daniel on 12/28/2014.
+ * Created by OwenSong on 12/24/2018.
  */
 public class FileCombination {
 
@@ -98,6 +98,7 @@ public class FileCombination {
           }
           catch (IOException e) {}
           mDatabase.addRecording(mFileName, mFilePath, 1000);
+          Toast.makeText(context, context.getString(R.string.toast_recording_finish), Toast.LENGTH_LONG).show();
     }
 
     public void setFileNameAndPath(){
