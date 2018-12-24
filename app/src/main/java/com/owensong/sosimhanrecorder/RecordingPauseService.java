@@ -7,7 +7,6 @@ import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -112,7 +111,7 @@ public class RecordingPauseService extends Service {
         mElapsedMillis = (System.currentTimeMillis() - mStartingTimeMillis);
         mRecorder.reset();
         mRecorder.release();
-       Toast.makeText(this, getString(R.string.toast_recording_finish) + " " + mFilePath, Toast.LENGTH_LONG).show();
+    //   Toast.makeText(this, getString(R.string.toast_recording_finish) + " " + mFilePath, Toast.LENGTH_LONG).show();
 
         //remove notification
         if (mIncrementTimerTask != null) {
@@ -123,6 +122,21 @@ public class RecordingPauseService extends Service {
         mRecorder = null;
         if(finalCheck==1) {
             new FileCombination(getApplicationContext(), pauseCount);
+
+            mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            mFilePath += "/TempSoundRecorder";
+            try {
+                File file = new File(mFilePath);
+                File[] files = file.listFiles();
+
+                for (int i = 0; i < files.length; i++) {
+                    files[i].delete();
+                }
+                file.delete();
+
+            }catch (Exception e) {
+
+            }
         }
     }
 

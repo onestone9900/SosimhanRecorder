@@ -103,8 +103,6 @@ public class RecordFragment extends Fragment {
         });
         mPauseButton = recordView.findViewById(R.id.btnPause);
         mPauseButton.setEnabled(false);
-        mPauseButton.setColorNormal(getResources().getColor(R.color.primary));
-        mPauseButton.setColorPressed(getResources().getColor(R.color.primary_dark));
         mPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,6 +167,8 @@ public class RecordFragment extends Fragment {
                     //folder /SoundRecorder doesn't exist, create the folder
                     folder.mkdir();
                 }
+
+                mPauseButton.setBackgroundColor(Color.RED);
                 mCountButton.setEnabled(true);
                 mPauseButton.setEnabled(true);
                 //start RecordingService
@@ -191,6 +191,7 @@ public class RecordFragment extends Fragment {
                 mCountButton.setEnabled(false);
                 mCountTextView.setText("0");
                 mRecordingPrompt.setText(getString(R.string.record_prompt));
+                mPauseButton.setBackgroundColor(Color.GRAY);
                 mPauseButton.setEnabled(false);
                 endingCheck=1;
                 rp.setFinalCheck();
