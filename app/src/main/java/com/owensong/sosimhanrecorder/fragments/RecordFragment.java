@@ -162,17 +162,20 @@ public class RecordFragment extends Fragment {
                 // start recording
                 mRecordButton.setImageResource(R.drawable.ic_media_stop);
                 Toast.makeText(getActivity(),R.string.toast_recording_start,Toast.LENGTH_SHORT).show();
-                File folder = new File(Environment.getExternalStorageDirectory() + "/TempSoundRecorder");
-                if (!folder.exists()) {
+                File tempFolder = new File(Environment.getExternalStorageDirectory() + "/TempSoundRecorder");
+                if (!tempFolder.exists()) {
                     //folder /SoundRecorder doesn't exist, create the folder
-                    folder.mkdir();
+                    tempFolder.mkdir();
                 }
 
+                File mainFolder = new File(Environment.getExternalStorageDirectory() + "/SoundRecorder");
+                if (!mainFolder.exists()) {
+                    mainFolder.mkdir();
+                }
                 mPauseButton.setBackgroundColor(Color.RED);
                 mCountButton.setEnabled(true);
                 mPauseButton.setEnabled(true);
                 //start RecordingService
-              //  getActivity().startService(tempIntent.putExtra("pauseCount",pauseCount));
                 getActivity().bindService(tempIntent.putExtra("pauseCount",pauseCount),conn, Context.BIND_AUTO_CREATE);
                 //keep screen on while recording
                 getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -195,12 +198,10 @@ public class RecordFragment extends Fragment {
                 mPauseButton.setEnabled(false);
                 endingCheck=1;
                 rp.setFinalCheck();
-
                 if(startServiceCheck==1) {
                     getActivity().unbindService(conn);
                     getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
-                //getActivity().stopService(tempIntent);
                 pauseCount=1;
                 endingCheck=0;
                 startServiceCheck=0;
@@ -216,7 +217,6 @@ public class RecordFragment extends Fragment {
                 mRecordingPrompt.setText(getString(R.string.resume_recording_button));
                 getActivity().unbindService(conn);
                 getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                //getActivity().stopService(tempIntent.putExtra("endingCheck",endingCheck));
                 //allow the screen to turn off again once recording is finished
                 startServiceCheck=0;
                 break;
@@ -228,18 +228,10 @@ public class RecordFragment extends Fragment {
                 mRecordButton.setEnabled(true);
                 mRecordingPrompt.setText(getString(R.string.record_in_progress) + ".");
                 mCountButton.setEnabled(true);
-                File folder = new File(Environment.getExternalStorageDirectory() + "/TempSoundRecorder");
-                if (!folder.exists()) {
-                    //folder /SoundRecorder doesn't exist, create the folder
-                   folder.mkdir();
-                }
-                mCountButton.setEnabled(true);
                 //start RecordingService
                 getActivity().bindService(tempIntent.putExtra("pauseCount",pauseCount),conn, Context.BIND_AUTO_CREATE);
-                //getActivity().startService(tempIntent.putExtra("pauseCount",pauseCount));
                 //keep screen on while recording
                 getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
                 mRecordingPrompt.setText(getString(R.string.record_in_progress) + ".");
                 mRecordPromptCount++;
                 startServiceCheck=1;
