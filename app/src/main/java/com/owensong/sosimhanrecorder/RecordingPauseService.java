@@ -17,19 +17,14 @@ import java.util.TimerTask;
  */
 public class RecordingPauseService extends Service {
 
-    private static final String LOG_TAG = "RecordingService";
-
+    private static final String LOG_TAG = "RecordingPauseService";
     private String mFileName = null;
     private String mFilePath = null;
-
     private MediaRecorder mRecorder = null;
-
     private long mStartingTimeMillis = 0;
     private long mElapsedMillis = 0;
-
     private TimerTask mIncrementTimerTask = null;
     private int pauseCount=0;
-
     private int finalCheck=0;
 
     IBinder mBinder = new MyBinder();
@@ -63,7 +58,6 @@ public class RecordingPauseService extends Service {
         if (mRecorder != null) {
             stopRecording();
         }
-
         super.onDestroy();
     }
 
@@ -90,9 +84,6 @@ public class RecordingPauseService extends Service {
             mRecorder.start();
             mStartingTimeMillis = System.currentTimeMillis();
 
-            //startTimer();
-            //startForeground(1, createNotification());
-
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
@@ -111,9 +102,6 @@ public class RecordingPauseService extends Service {
         mElapsedMillis = (System.currentTimeMillis() - mStartingTimeMillis);
         mRecorder.reset();
         mRecorder.release();
-    //   Toast.makeText(this, getString(R.string.toast_recording_finish) + " " + mFilePath, Toast.LENGTH_LONG).show();
-
-        //remove notification
         if (mIncrementTimerTask != null) {
             mIncrementTimerTask.cancel();
             mIncrementTimerTask = null;
@@ -122,7 +110,6 @@ public class RecordingPauseService extends Service {
         mRecorder = null;
         if(finalCheck==1) {
             new FileCombination(getApplicationContext(), pauseCount);
-
             mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
             mFilePath += "/TempSoundRecorder";
             try {
@@ -133,7 +120,6 @@ public class RecordingPauseService extends Service {
                     files[i].delete();
                 }
                 file.delete();
-
             }catch (Exception e) {
 
             }

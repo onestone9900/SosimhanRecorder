@@ -53,8 +53,7 @@ public class FileCombination {
             for(int i=0;i<pauseCount;i++) {
                 inMovies[i] = MovieCreator.build(tempFilePath + (i+1) + ".mp4");
             }
-        }
-        catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
 
@@ -82,21 +81,18 @@ public class FileCombination {
 
           try{
               fc = new FileOutputStream(new File(mFilePath)).getChannel();
-          }
-          catch (FileNotFoundException e){
+          }catch (FileNotFoundException e){
               e.printStackTrace();
           }
 
           try{
               out.writeContainer(fc);
-          }
-          catch (IOException e){
+          }catch (IOException e){
               e.printStackTrace();
           }
           try{
               fc.close();
-          }
-          catch (IOException e) {}
+          }catch (IOException e) {}
           mDatabase.addRecording(mFileName, mFilePath, 1000);
           Toast.makeText(context, context.getString(R.string.toast_recording_finish), Toast.LENGTH_LONG).show();
     }

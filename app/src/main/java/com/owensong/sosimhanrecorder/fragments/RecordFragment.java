@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
@@ -18,10 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.owensong.sosimhanrecorder.FileCombination;
 import com.owensong.sosimhanrecorder.R;
 import com.owensong.sosimhanrecorder.RecordingPauseService;
-import com.owensong.sosimhanrecorder.RecordingService;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.io.File;
@@ -48,11 +45,9 @@ public class RecordFragment extends Fragment {
     private static final int PAUSE_START_RECORDING=4;
 
     private FloatingActionButton mPauseButton=null;
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_POSITION = "position";
     private static final String LOG_TAG = RecordFragment.class.getSimpleName();
     private int position;
-    //Recording controls
     private FloatingActionButton mRecordButton = null;
     private TextView mRecordingPrompt;
     private int mRecordPromptCount = 0;
@@ -88,9 +83,8 @@ public class RecordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View recordView = inflater.inflate(R.layout.fragment_record, container, false);
-
-        //update recording prompt text
         mRecordingPrompt = recordView.findViewById(R.id.recording_status_text);
+
 
         mCountButton=recordView.findViewById(R.id.btnCount);
         mCountTextView=recordView.findViewById(R.id.tvCount);
@@ -101,6 +95,8 @@ public class RecordFragment extends Fragment {
                 mCountTextView.setText(Integer.toString(++count));
             }
         });
+
+
         mPauseButton = recordView.findViewById(R.id.btnPause);
         mPauseButton.setEnabled(false);
         mPauseButton.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +110,7 @@ public class RecordFragment extends Fragment {
                 onRecord(recordingOption);
             }
         });
+
 
         mRecordButton =recordView.findViewById(R.id.btnRecord);
         mRecordButton.setColorNormal(getResources().getColor(R.color.primary));
@@ -131,6 +128,8 @@ public class RecordFragment extends Fragment {
         });
         return recordView;
     }
+
+
 
     RecordingPauseService rp;
     boolean isService = false;
@@ -150,52 +149,41 @@ public class RecordFragment extends Fragment {
         }
     };
 
-    // Recording Start/Stop
-    //TODO: recording pause
+
     private void onRecord(int option){
-
-        Intent intent = new Intent(getActivity(), RecordingService.class);
         Intent tempIntent = new Intent(getActivity(), RecordingPauseService.class);
-
         switch(option){
             case START_RECORDING:{
-                // start recording
                 mRecordButton.setImageResource(R.drawable.ic_media_stop);
+                mPauseButton.setBackgroundColor(Color.RED);
+                mCountButton.setEnabled(true);
+                mPauseButton.setEnabled(true);
+                mRecordingPrompt.setText(getString(R.string.record_in_progress) + ".");
                 Toast.makeText(getActivity(),R.string.toast_recording_start,Toast.LENGTH_SHORT).show();
                 File tempFolder = new File(Environment.getExternalStorageDirectory() + "/TempSoundRecorder");
                 if (!tempFolder.exists()) {
-                    //folder /SoundRecorder doesn't exist, create the folder
                     tempFolder.mkdir();
                 }
-
                 File mainFolder = new File(Environment.getExternalStorageDirectory() + "/SoundRecorder");
                 if (!mainFolder.exists()) {
                     mainFolder.mkdir();
                 }
-                mPauseButton.setBackgroundColor(Color.RED);
-                mCountButton.setEnabled(true);
-                mPauseButton.setEnabled(true);
-                //start RecordingService
                 getActivity().bindService(tempIntent.putExtra("pauseCount",pauseCount),conn, Context.BIND_AUTO_CREATE);
-                //keep screen on while recording
                 getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-                mRecordingPrompt.setText(getString(R.string.record_in_progress) + ".");
                 mRecordPromptCount++;
                 startServiceCheck=1;
                 break;
             }
             case STOP_RECORDING:{
-                //stop recording
                 mRecordButton.setImageResource(R.drawable.ic_mic_white_36dp);
                 mPauseButton.setImageResource(R.drawable.ic_media_pause);
-                timeWhenPaused = 0;
-                count = 0;
+                mPauseButton.setBackgroundColor(Color.GRAY);
+                mPauseButton.setEnabled(false);
                 mCountButton.setEnabled(false);
                 mCountTextView.setText("0");
                 mRecordingPrompt.setText(getString(R.string.record_prompt));
-                mPauseButton.setBackgroundColor(Color.GRAY);
-                mPauseButton.setEnabled(false);
+                timeWhenPaused = 0;
+                count = 0;
                 endingCheck=1;
                 rp.setFinalCheck();
                 if(startServiceCheck==1) {
@@ -208,31 +196,26 @@ public class RecordFragment extends Fragment {
                 break;
             }
             case PAUSE_STOP_RECORDING:{
-                //stop recording
                 mRecordButton.setBackgroundColor(Color.GRAY);
                 mRecordButton.setEnabled(false);
-                pauseCount++;
                 mPauseButton.setImageResource(R.drawable.ic_media_play);
                 mCountButton.setEnabled(false);
                 mRecordingPrompt.setText(getString(R.string.resume_recording_button));
                 getActivity().unbindService(conn);
                 getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                //allow the screen to turn off again once recording is finished
                 startServiceCheck=0;
+                pauseCount++;
                 break;
             }
             case PAUSE_START_RECORDING:{
-                // start recording
                 mPauseButton.setImageResource(R.drawable.ic_media_pause);
                 mRecordButton.setBackgroundColor(Color.RED);
                 mRecordButton.setEnabled(true);
                 mRecordingPrompt.setText(getString(R.string.record_in_progress) + ".");
                 mCountButton.setEnabled(true);
-                //start RecordingService
-                getActivity().bindService(tempIntent.putExtra("pauseCount",pauseCount),conn, Context.BIND_AUTO_CREATE);
-                //keep screen on while recording
-                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 mRecordingPrompt.setText(getString(R.string.record_in_progress) + ".");
+                getActivity().bindService(tempIntent.putExtra("pauseCount",pauseCount),conn, Context.BIND_AUTO_CREATE);
+                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 mRecordPromptCount++;
                 startServiceCheck=1;
                 break;
