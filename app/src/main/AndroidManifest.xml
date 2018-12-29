@@ -39,7 +39,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-        <service android:name="com.owensong.sosimhanrecorder.RecordingService" />
         <service android:name="com.owensong.sosimhanrecorder.RecordingPauseService" />
     </application>
 
