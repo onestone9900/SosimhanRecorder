@@ -21,12 +21,10 @@ public class RecordingPauseService extends Service {
     private String mFileName = null;
     private String mFilePath = null;
     private MediaRecorder mRecorder = null;
-    private long mStartingTimeMillis = 0;
-    private long mElapsedMillis = 0;
-    private TimerTask mIncrementTimerTask = null;
     private int pauseCount=0;
     private int finalCheck=0;
-
+    private RecordingTime recordingTime = null;
+    private long totalRecordingTime = 0;
     IBinder mBinder = new MyBinder();
     public class MyBinder extends Binder {
         public RecordingPauseService getService() { // 서비스 객체를 리턴
@@ -36,6 +34,7 @@ public class RecordingPauseService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        recordingTime=new RecordingTime();
         pauseCount=intent.getExtras().getInt("pauseCount");
         startRecording();
         return mBinder;
@@ -47,22 +46,22 @@ public class RecordingPauseService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        pauseCount=intent.getExtras().getInt("pauseCount");
-        startRecording();
-        return START_STICKY;
-    }
+    public int onStartCommand(Intent intent, int flags, int startId) { return START_STICKY; }
 
     @Override
     public void onDestroy() {
         if (mRecorder != null) {
-            stopRecording();
         }
+
         super.onDestroy();
     }
 
-    public void setFinalCheck() { // 임의 랜덤값을 리턴하는 메서드
+    public void setFinalCheck() {
         this.finalCheck=1;
+    }
+
+    public void setTotalRecordingTime(long totalRecordingTime){
+        this.totalRecordingTime=totalRecordingTime;
     }
 
     public void startRecording() {
@@ -82,8 +81,7 @@ public class RecordingPauseService extends Service {
         try {
             mRecorder.prepare();
             mRecorder.start();
-            mStartingTimeMillis = System.currentTimeMillis();
-
+            recordingTime.startRecording();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
@@ -97,19 +95,15 @@ public class RecordingPauseService extends Service {
         f = new File(mFilePath);
     }
 
-    public void stopRecording() {
+    public long stopRecording() {
         mRecorder.stop();
-        mElapsedMillis = (System.currentTimeMillis() - mStartingTimeMillis);
         mRecorder.reset();
         mRecorder.release();
-        if (mIncrementTimerTask != null) {
-            mIncrementTimerTask.cancel();
-            mIncrementTimerTask = null;
-        }
-
+        recordingTime.stopRecording();
         mRecorder = null;
         if(finalCheck==1) {
-            new FileCombination(getApplicationContext(), pauseCount);
+            totalRecordingTime = totalRecordingTime + recordingTime.getmElapsedMillis();
+            new FileCombination(getApplicationContext(), pauseCount, totalRecordingTime);
             mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
             mFilePath += "/TempSoundRecorder";
             try {
@@ -124,6 +118,7 @@ public class RecordingPauseService extends Service {
 
             }
         }
+        return recordingTime.getmElapsedMillis();
     }
 
 }

@@ -37,11 +37,14 @@ public class FileCombination {
     private int pauseCount=0;
     private DBHelper mDatabase;
     private Context context;
+    private long totalRecordigTime=0;
 
-    public FileCombination(Context context,int pauseCount) {
+    public FileCombination(Context context,int pauseCount, long totalRecordingTime) {
         mDatabase = new DBHelper(context);
         this.pauseCount=pauseCount;
         this.context=context;
+        this.totalRecordigTime=totalRecordingTime;
+
         setFileNameAndPath();
         combine();
     }
@@ -93,7 +96,7 @@ public class FileCombination {
           try{
               fc.close();
           }catch (IOException e) {}
-          mDatabase.addRecording(mFileName, mFilePath, 1000);
+          mDatabase.addRecording(mFileName, mFilePath, totalRecordigTime);
           Toast.makeText(context, context.getString(R.string.toast_recording_finish), Toast.LENGTH_LONG).show();
     }
 

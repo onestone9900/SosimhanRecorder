@@ -59,6 +59,7 @@ public class RecordFragment extends Fragment {
     int pauseCount=1;
     int endingCheck=0;
     int startServiceCheck=0;
+    long totalRecordingTime=0;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -186,12 +187,13 @@ public class RecordFragment extends Fragment {
                 count = 0;
                 endingCheck=1;
                 rp.setFinalCheck();
-                if(startServiceCheck==1) {
-                    getActivity().unbindService(conn);
-                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                }
+                rp.setTotalRecordingTime(totalRecordingTime);
+                rp.stopRecording();
+                getActivity().unbindService(conn);
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 pauseCount=1;
                 endingCheck=0;
+                totalRecordingTime=0;
                 startServiceCheck=0;
                 break;
             }
@@ -201,6 +203,7 @@ public class RecordFragment extends Fragment {
                 mPauseButton.setImageResource(R.drawable.ic_media_play);
                 mCountButton.setEnabled(false);
                 mRecordingPrompt.setText(getString(R.string.resume_recording_button));
+                totalRecordingTime=totalRecordingTime + rp.stopRecording();
                 getActivity().unbindService(conn);
                 getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 startServiceCheck=0;
