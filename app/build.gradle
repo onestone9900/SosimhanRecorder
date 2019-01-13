@@ -8,8 +8,8 @@ android {
         applicationId "com.owensong.sosimhanrecorder"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 132
-        versionName "1.1.1"
+        versionCode 134
+        versionName "1.3.1"
     }
     buildTypes {
         release {

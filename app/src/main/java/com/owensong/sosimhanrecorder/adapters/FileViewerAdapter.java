@@ -1,17 +1,12 @@
 package com.owensong.sosimhanrecorder.adapters;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -104,7 +99,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
             @Override
             public boolean onLongClick(View v) {
 
-                ArrayList<String> entrys = new ArrayList<String>();
+                ArrayList<String> entrys = new ArrayList<>();
                 entrys.add(mContext.getString(R.string.dialog_file_share));
                 entrys.add(mContext.getString(R.string.dialog_file_rename));
                 entrys.add(mContext.getString(R.string.dialog_file_delete));
@@ -260,6 +255,8 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         View view = inflater.inflate(R.layout.dialog_rename_file, null);
 
         final EditText input = view.findViewById(R.id.new_name);
+        String originalFileName = mDatabase.getItemAt(position).getName().replace(".mp4","");
+        input.setText(originalFileName);
 
         renameFileBuilder.setTitle(mContext.getString(R.string.dialog_title_rename));
         renameFileBuilder.setCancelable(true);
